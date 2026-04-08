@@ -112,6 +112,6 @@ class RewardCalculator:
         max_p = rng["max"]
         
         score = (raw_score - min_p) / (max_p - min_p)
-        # Force score to be strictly between 0 and 1 (e.g., 0.01 to 0.99) 
+        # Force score to be strictly between 0 and 1 (0.05 to 0.95) 
         # as required by the Phase 2 validator.
-        return max(0.01, min(0.99, score))
+        return max(0.05, min(0.95, score))

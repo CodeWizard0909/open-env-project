@@ -65,7 +65,9 @@ class HospitalEnvironment(Environment[HospitalAction, HospitalObservation, Hospi
             seed=used_seed,
             max_steps=config["max_steps"]
         )
-        self._metadata = {}
+        self._metadata = {
+            "normalized_score": 0.5  # Neutral start score
+        }
         
         return self._build_observation(reward=0.0, done=False)
 
@@ -92,16 +94,20 @@ class HospitalEnvironment(Environment[HospitalAction, HospitalObservation, Hospi
         # Check termination
         done = self._state.step_count >= self._state.max_steps
         
+        # Update continuous normalized score in metadata
+        norm_score = self._grader.normalize(self._state.cumulative_reward, self.task_id)
+        self._metadata["normalized_score"] = norm_score
+
         if done:
             # Add terminal reward
             terminal = self._grader.terminal_score(self._sim)
             reward += terminal
             
             # Grader specifically needs a normalized score [0.0, 1.0] for the Hackathon
-            # we provide the normalized score in the metadata
-            norm_score = self._grader.normalize(self._state.cumulative_reward + terminal, self.task_id)
+            # we provide the final normalized score in the metadata
+            final_norm_score = self._grader.normalize(self._state.cumulative_reward + terminal, self.task_id)
             self._state.cumulative_reward += terminal
-            self._metadata["normalized_score"] = norm_score
+            self._metadata["normalized_score"] = final_norm_score
 
         return self._build_observation(reward=reward, done=done)
 
