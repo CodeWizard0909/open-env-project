@@ -1,0 +1,69 @@
+name: hospital_bed_env
+version: 1.0.0
+description: "Hospital Bed and Resource Allocation RL Environment - Meta AI Hackathon 2026"
+tags: [healthcare, operations, resource-management, triage]
+tasks:
+  - id: steady_state
+    description: "Easy: Single general ward, steady patient flow, 10 steps max"
+    difficulty: easy
+  - id: surge_event
+    description: "Medium: 3 wards with surge event at step 9, 20 steps max"
+    difficulty: medium
+  - id: mass_casualty
+    description: "Hard: Mass casualty + staff shortage, 30 steps max"
+    difficulty: hard
+action_space:
+  type: object
+  properties:
+    decisions:
+      type: array
+      description: "List of patient decisions, one per ED queue patient"
+      items:
+        type: object
+        properties:
+          patient_id:
+            type: string
+            description: "ID of patient to act on"
+          action:
+            type: string
+            enum: ["admit_icu", "admit_general", "admit_surgical", "defer", "discharge"]
+            description: "Action to take for this patient"
+          discharge_patient_id:
+            type: string
+            nullable: true
+            description: "Optional: patient to discharge to free a bed"
+observation_space:
+  type: object
+  properties:
+    step:
+      type: integer
+      description: "Current step number"
+    max_steps:
+      type: integer
+      description: "Episode length"
+    wards:
+      type: object
+      description: "Ward states with bed counts and occupancy"
+    ed_queue:
+      type: array
+      description: "Patients waiting in Emergency Department"
+    admitted:
+      type: array
+      description: "Patients currently in wards"
+    discharged:
+      type: array
+      description: "Patients discharged this episode"
+    events:
+      type: array
+      description: "Recent simulation events"
+    text_summary:
+      type: string
+      description: "Human/LLM-readable state summary"
+    reward:
+      type: number
+      description: "Reward for this step"
+    done:
+      type: boolean
+      description: "Episode termination flag"
+reward_range: [-1.0, 1.0]
+normalized_score_range: [0.0, 1.0]
