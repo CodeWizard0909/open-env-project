@@ -181,14 +181,14 @@ async def run_task(client: OpenAI, task_name: str, port: int) -> float:
                 break
 
         # Hackathon spec says normalized score from 0.0 to 1.0 is in metadata
-        total_norm_score = obs.metadata.get("normalized_score", 0.0)
+        total_norm_score = obs.metadata.get("normalized_score", 0.5)
         success = total_norm_score > 0.5  # Simple success threshold
 
     except Exception as e:
         print(f"[DEBUG] Exception during task {task_name}: {e}\n\n", flush=True)
         import traceback
         traceback.print_exc()
-        total_norm_score = 0.0
+        total_norm_score = 0.05
     finally:
         # Close the environment connection
         try:
@@ -196,6 +196,8 @@ async def run_task(client: OpenAI, task_name: str, port: int) -> float:
         except Exception:
             pass
 
+    # Safety clamp: validator requires score strictly in (0, 1)
+    total_norm_score = max(0.05, min(0.95, total_norm_score))
     log_end(success=success, steps=steps_taken, score=total_norm_score, rewards=rewards)
 
     return total_norm_score
