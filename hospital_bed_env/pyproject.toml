@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hospital-bed-env"
+version = "1.0.0"
+description = "Hospital Bed and Resource Allocation OpenEnv"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openenv-core>=10.8.0",
+    "pydantic>=2.9.0",
+    "numpy>=1.26.0",
+    "fastapi>=0.112.0",
+    "uvicorn>=0.30.0",
+    "requests>=2.31.0",
+]
+
+[project.scripts]
+hospital-server = "hospital_bed_env.server.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["hospital_bed_env", "hospital_bed_env/server"]
