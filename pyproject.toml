@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
-hospital-server = "hospital_bed_env.server.app:main"
+server = "hospital_bed_env.server.app:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["hospital_bed_env"]

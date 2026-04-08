@@ -17,9 +17,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the package source
 COPY hospital_bed_env/ ./hospital_bed_env/
+COPY server/ ./server/
 COPY pyproject.toml .
 COPY README.md .
 COPY openenv.yaml .
+COPY uv.lock .
 
 # Install the package itself in editable mode
 RUN pip install --no-cache-dir -e .
