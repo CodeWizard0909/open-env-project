@@ -1,0 +1,38 @@
+# Environment variables - NEVER commit these
+.env
+.env.*
+*.env
+
+# Python virtual environment
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Logs
+*.log
+logs/
+
+# Testing and cache
+.pytest_cache/
+.cache/
+htmlcov/
+.coverage
+
+# IDE / OS files
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Hugging Face deploy folder (has its own repo)
+hospital-bed-env-hf/
